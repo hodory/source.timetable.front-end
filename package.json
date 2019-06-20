@@ -2,7 +2,7 @@
   "name": "timetable",
   "version": "1.0.0",
   "description": "Nuxt.js project",
-  "author": "hodory<mo02@outlook.kr>",
+  "author": "hodory <mo02@outlook.kr>",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -13,7 +13,10 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "@nuxtjs/axios": "^5.5.4",
+    "nuxt": "^2.0.0",
+    "tui-calendar": "^1.12.1",
+    "vue-multiselect": "^2.1.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
