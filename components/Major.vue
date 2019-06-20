@@ -10,7 +10,7 @@
                  @select="onMajorChange"
                  placeholder="학과 선택">
     </multiselect>
-    <subject-search-bar v-bind:subject-list="subjectList"/>
+    <subject-search-bar v-bind:subject-list="subjectList" v-bind:handle-cases="handleCases"/>
   </div>
 </template>
 
@@ -24,6 +24,9 @@
   export default {
     name: "Major",
     components: {SubjectSearchBar, Multiselect},
+    props: [
+      'handleCases'
+    ],
     data() {
       return {
         majorList: [
@@ -57,6 +60,7 @@
         }
       },
       _resetList() {
+        this.handleCases([]);
         this.subjectList = [];
       }
     }

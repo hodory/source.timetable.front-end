@@ -1,8 +1,8 @@
 <template>
   <section class="container">
     <div>
-      <Major/>
-      <TimeTable/>
+      <Major v-bind:handle-cases="handleCases"/>
+      <TimeTable v-bind:cases="cases"/>
     </div>
   </section>
 </template>
@@ -17,6 +17,20 @@ export default {
     Major,
     TimeTable,
     AppLogo
+  },
+  data() {
+    return {
+      cases: []
+    }
+  },
+  methods: {
+    // 조회하기 버튼 선택시 처리하는 부분
+    handleCases(selectedSubject) {
+      this._makeCases(selectedSubject);
+    },
+    _makeCases(subjectList) {
+      // TODO : subjectList를 받아 처리하는 부분 작성
+    }
   }
 }
 </script>
