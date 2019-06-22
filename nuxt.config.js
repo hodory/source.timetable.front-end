@@ -36,8 +36,15 @@ module.exports = {
     }
   },
   plugins: [
+    {
+      src: '~plugins/tui-calendar',
+      ssr: false,
+    }
   ],
   vendor: [
     'axios',
+    '@toast-ui/vue-calendar',
+    'moment',
+    'lodash',
   ]
 };
