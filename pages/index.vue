@@ -2,7 +2,10 @@
   <section class="container">
     <div>
       <Major v-bind:handle-cases="handleCases"/>
-      <TimeTable v-bind:cases="cases"/>
+      <div v-if="isShowingCases">
+        <span v-text="currentCaseIndex"></span> / <span v-text="caseCount"></span>
+      </div>
+      <TimeTable v-bind:cases="currentCase"/>
     </div>
   </section>
 </template>
@@ -25,22 +28,26 @@
     },
     data() {
       return {
+        isShowingCases: false,
+        currentCaseIndex: 0,
         cases: []
       }
     },
     methods: {
       // 조회하기 버튼 선택시 처리하는 부분
       handleCases(selectedSubject) {
+        this.isShowingCases = true;
+        this.currentCaseIndex = 0;
         const optionList = _.map(selectedSubject, 'options');
         // 시간 객체를 모두 담음.
         let cases = this._makeCases(optionList);
-        // TODO : 타이틀을 가져올 수 있도록 변경 필요
         // 중복 제거
         _.forEach(cases, (_case, _key) => {
           const times = _.mapValues(_case, 'times');
           let isOverlapped = false;
           let diffOverlap = [];
-          _.forEach(times, (v1) => {
+          _.forEach(times, (v1, k) => {
+            console.log(`k : ${k} | v : ${JSON.stringify(v1)} | currentSelected : ${JSON.stringify(selectedSubject[k])}`);
             _.forEach(v1, (v2) => {
               const startTime = v2.startTime.split(":");
               const endTime = v2.endTime.split(":");
@@ -65,6 +72,14 @@
             if (isOverlapped) {
               console.log(`isOverlap second`);
               return false;
+            } else {
+              console.log("================");
+              console.log(cases[_key][k]);
+              console.log(selectedSubject[k].title);
+              console.log(cases[_key][k]);
+              _.assign(cases[_key][k], {
+                "title": selectedSubject[k].title
+              });
             }
           });
           if (isOverlapped) {
@@ -79,20 +94,28 @@
       _makeCases(arg) {
         let r = [], max = arg.length - 1;
 
-        function helper(arr, i) {
+        function _recursive(arr, i) {
           for (let j = 0, l = arg[i].length; j < l; j++) {
             let a = arr.slice(0);
             a.push(arg[i][j]);
             if (i === max) {
               r.push(a);
             } else
-              helper(a, i + 1);
+              _recursive(a, i + 1);
           }
         }
 
-        helper([], 0);
+        _recursive([], 0);
         return r;
+      }
+    },
+    computed: {
+      caseCount() {
+        return this.cases.length;
       },
+      currentCase() {
+        return this.cases[this.currentCaseIndex];
+      }
     }
   }
 </script>
