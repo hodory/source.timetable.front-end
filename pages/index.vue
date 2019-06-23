@@ -46,21 +46,23 @@
         const optionList = _.map(selectedSubject, 'options');
         // 시간 객체를 모두 담음.
         let cases = this._makeCases(optionList);
-        // TODO : 중복제거가 제대로 안되는 경우가 있으므로 확인 필요 (IT-리더십 세미나/컴퓨터 공학세미나/시스템프로그래밍 선택시 14,17번째 경우)
+        let allCase = [];
         // 중복 제거
-        _.forEach(cases, (_case, _key) => {
-          const times = _.mapValues(_case, 'times');
+        _.map(cases, (_case, _key) => {
+          console.log(`caseKey: ${_key} | times : ${JSON.stringify(_case)}`);
+          const times = _.map(_case, 'times');
           let isOverlapped = false;
           let diffOverlap = [];
-          _.forEach(times, (v1, k) => {
-            _.forEach(v1, (v2) => {
+          _.map(times, (v1, k) => {
+            _.map(v1, (v2) => {
+              console.log(`caseKey: ${_key} | timesKey : ${k} | title : ${selectedSubject[k].title} | day : ${v2.day} |startTime : ${v2.startTime} | endTime : ${v2.endTime}`, JSON.stringify(diffOverlap));
               const startTime = v2.startTime.split(":");
               const endTime = v2.endTime.split(":");
-              const sMoment = moment().days(v2.day).hour(startTime[0]).minute(startTime[1]);
-              const eMoment = moment().days(v2.day).hour(endTime[0]).minute(endTime[1]);
+              const sMoment = moment().days(v2.day).hour(startTime[0]).minute(startTime[1]).second(0);
+              const eMoment = moment().days(v2.day).hour(endTime[0]).minute(endTime[1]).second(0);
               const range = moment.range(sMoment, eMoment);
               if (diffOverlap) {
-                _.forEach(diffOverlap, (value) => {
+                _.map(diffOverlap, (value) => {
                   if (range.overlaps(value)) {
                     isOverlapped = true;
                     return false;
@@ -83,13 +85,14 @@
               });
             }
           });
-          if (isOverlapped) {
-            console.log(`isOverlap remove`);
-            cases.splice(_key, 1);
+          if (!isOverlapped) {
+            allCase.push(_case);
           }
+          console.log("==================================================");
+          console.log(cases);
         });
 
-        this.cases = cases;
+        this.cases = allCase;
       },
       // 가능한 경우를 만들어주는 함수
       _makeCases(arg) {
