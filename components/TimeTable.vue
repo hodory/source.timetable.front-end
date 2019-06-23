@@ -8,6 +8,7 @@
                   :theme="theme"
                   :week="week"
                   :month="month"
+                  :template="template"
                   :disableDblClick="disableDblClick"
                   :isReadOnly="isReadOnly"
     />
@@ -29,16 +30,18 @@
         view: 'week',
         taskView: false,
         scheduleView: ['time'],
-        theme: {
-          'week.daygridLeft.width': '100px',
-          'week.timegridLeft.width': '100px'
+        theme: {},
+        template: {
+          weekDayname: function (model) {
+            return '<span class="tui-full-calendar-dayname-date">' + model.dayName + '</span>';
+          },
         },
         week: {
           narrowWeekend: true,
           workweek: true,
-          hourStart: 9,
-          hourEnd: 18,
-          // daynames: ['월', '화', '수', '목', '금']
+          hourStart: 8,
+          hourEnd: 19,
+          daynames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
         },
         month: {
           visibleWeeksCount: 6,
