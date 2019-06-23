@@ -11,6 +11,8 @@
                  placeholder="학과 선택">
     </multiselect>
     <subject-search-bar v-bind:subject-list="subjectList" v-bind:handle-cases="handleCases"
+                        v-bind:selected="selectedItems"
+                        v-bind:total-grade="totalGrade"
                         v-bind:handle-message="handleMessage"/>
   </div>
 </template>
@@ -43,6 +45,8 @@
         ],
         subjectList: [],
         major: "",
+        selectedItems: [],
+        totalGrade: 0,
       }
     },
     methods: {
@@ -52,6 +56,8 @@
           try {
             const {data} = await axios.get(`${REQUEST_BASE_URL}/v1/subject/list?major=${value}`);
             this.subjectList = data.list;
+            this.selectedItems = [];
+            this.totalGrade = 0;
             this.handleMessage("과목을 선택해주세요");
           } catch (e) {
             this._resetList();
