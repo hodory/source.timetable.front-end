@@ -10,7 +10,8 @@
                  @select="onMajorChange"
                  placeholder="학과 선택">
     </multiselect>
-    <subject-search-bar v-bind:subject-list="subjectList" v-bind:handle-cases="handleCases"/>
+    <subject-search-bar v-bind:subject-list="subjectList" v-bind:handle-cases="handleCases"
+                        v-bind:handle-message="handleMessage"/>
   </div>
 </template>
 
@@ -25,7 +26,8 @@
     name: "Major",
     components: {SubjectSearchBar, Multiselect},
     props: [
-      'handleCases'
+      'handleCases',
+      'handleMessage'
     ],
     data() {
       return {
@@ -50,9 +52,11 @@
           try {
             const {data} = await axios.get(`${REQUEST_BASE_URL}/v1/subject/list?major=${value}`);
             this.subjectList = data.list;
+            this.handleMessage("과목을 선택해주세요");
           } catch (e) {
             this._resetList();
             alert("해당 학과에 등록된 과목이 없습니다.");
+            this.handleMessage("학과를 다시 선택해주세요");
             console.log(e.toLocaleString());
           }
         } else {
