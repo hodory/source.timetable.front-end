@@ -34,9 +34,13 @@
       'subjectList',
       'handleCases',
       'handleMessage',
-      'selected',
-      'totalGrade'
     ],
+    data() {
+      return {
+        selected: [],
+        totalGrade: 0,
+      }
+    },
     computed: {
       isNotEmptyList() {
         return (Array.isArray(this.subjectList) && this.subjectList.length)
