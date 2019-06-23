@@ -20,7 +20,7 @@
   import Multiselect from 'vue-multiselect'
   import axios from 'axios';
 
-  const REQUEST_BASE_URL = "http://hodory-time-table.herokuapp.com/";
+  const REQUEST_BASE_URL = "https://hodory-time-table.herokuapp.com/";
 
   export default {
     name: "Major",
